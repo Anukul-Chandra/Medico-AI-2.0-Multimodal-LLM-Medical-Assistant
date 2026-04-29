@@ -1,47 +1,89 @@
-#Step1: Setup Audio Recorder (ffmpeg & portaudio)
-
+# Step1: Setup Audio Recorder (sounddevice - no PyAudio needed)
 import logging
+import sounddevice as sd
+from scipy.io.wavfile import write
 import speech_recognition as sr
 from pydub import AudioSegment
 from io import BytesIO
+import numpy as np
+import os
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s'  )
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def record_audio(file_path, timeout =20,phrase_time_limit =None):
+def record_audio(file_path, timeout=20, phrase_time_limit=None, fs=44100):
     """
-   Simplified function to record audio from the microphone and save it as a MP3 file.
+    Record audio using microphone and save as MP3.
+
     Args:
-        file_path (str): The path where the recorded audio will be saved.
-        timeout (int): Maximum time to wait for a phrase to start (in seconds).
-        phrase_time_limit (int): Maximum duration of a phrase (in seconds). If None, it will record until silence is detected.
-
+        file_path (str): Output file path
+        timeout (int): max wait time (simulate start delay)
+        phrase_time_limit (int): recording duration (seconds)
     """
 
-    recognizer = sr.Recognizer()
     try:
-        with sr.Microphone() as source:
-            logging.info("Adjusting for ambient noise...")
-            recognizer.adjust_for_ambient_noise(source,duration=1)
-            logging.info("Start speaking Now...")
+        logging.info("Adjusting for ambient noise...")
+        logging.info("Start speaking now...")
 
-            # Record  te Audio
-            audio = recognizer.listen(source, timeout=timeout, phrase_time_limit=phrase_time_limit)
-            logging.info("Recording complete, processing audio...")
+        # 🎯 duration logic (phrase_time_limit fallback)
+        duration = phrase_time_limit if phrase_time_limit else 5
 
-            #convert the audio to MP3 format
+        recording = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='int16')
+        sd.wait()
 
-            wav_data = audio.get_wav_data()
-            audio_segment = AudioSegment.from_wav(BytesIO(wav_data))
-            audio_segment.export(file_path, format="mp3",bitrate="128k")
-            logging.info(f"Audio saved successfully at {file_path}")
+        logging.info("Recording complete.")
+
+        # 🔍 Silent check
+        if np.max(np.abs(recording)) < 100:
+            logging.warning("Microphone seems silent! Check your microphone.")
+            return None
+
+        # Save temp WAV
+        temp_wav = "temp.wav"
+        write(temp_wav, fs, recording)
+
+        # Convert to MP3
+        audio_segment = AudioSegment.from_wav(temp_wav)
+        audio_segment.export(file_path, format="mp3", bitrate="128k")
+
+        logging.info(f"Audio saved to {file_path}")
+
+        return temp_wav
 
     except Exception as e:
-        logging.error(f"An error occurred while recording audio: {e}")
+        logging.error(f"An error occurred: {e}")
+        return None
 
 
-record_audio(file_path="pateient_audio.mp3")
+# Step2: Setup Speech to Text (STT) - Groq Whisper
+from groq import Groq
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+stt_model = "whisper-large-v3"
+
+def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
+    client = Groq(api_key=GROQ_API_KEY)
+
+    audio_file = open(audio_filepath, "rb")
+    transcription = client.audio.transcriptions.create(
+        model=stt_model,
+        file=audio_file,
+        language="en"
+    )
+    return transcription.text
 
 
-#Step2 : Setup Speech to text-STT-model for transcraption
+# RUN
+audio_filepath = "patient_voice_test_for_patient.mp3"
 
+# 👉 Now supports timeout + phrase_time_limit
+wav_file = record_audio(
+    file_path=audio_filepath,
+    timeout=20,
+    phrase_time_limit=5
+)
 
+if wav_file:
+    text = transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY)
+    print("\n✅ Final Output:", text)
+else:
+    print("\n❌ Recording failed")
