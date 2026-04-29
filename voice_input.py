@@ -72,18 +72,18 @@ def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
     return transcription.text
 
 
-# RUN
-audio_filepath = "patient_voice_test_for_patient.mp3"
+# # RUN (commented - used by app.py)
+# audio_filepath = "patient_voice_test_for_patient.mp3"
 
-# 👉 Now supports timeout + phrase_time_limit
-wav_file = record_audio(
-    file_path=audio_filepath,
-    timeout=20,
-    phrase_time_limit=5
-)
+# # 👉 Now supports timeout + phrase_time_limit
+# wav_file = record_audio(
+#     file_path=audio_filepath,
+#     timeout=20,
+#     phrase_time_limit=5
+# )
 
-if wav_file:
-    text = transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY)
-    print("\n✅ Final Output:", text)
-else:
-    print("\n❌ Recording failed")
+# if wav_file:
+#     text = transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY)
+#     print("\n✅ Final Output:", text)
+# else:
+#     print("\n❌ Recording failed")

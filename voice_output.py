@@ -92,9 +92,9 @@ def text_to_speech_with_elevenlabs(input_text, output_filepath):
         print(f"An error occurred while trying to play the audio: {e}")
 
 
-# 🔥 RUN (recommended)
-# text_to_speech_withgTTS(input_text, "gtts_testing_autoplay.mp3")
-text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing_autoplay.mp3")
+# # 🔥 RUN (commented - used by app.py)
+# # text_to_speech_withgTTS(input_text, "gtts_testing_autoplay.mp3")
+# text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing_autoplay.mp3")
 
-# ⚠️ Only if ElevenLabs paid plan
-# text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing.mp3")
+# # ⚠️ Only if ElevenLabs paid plan
+# # text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing.mp3")

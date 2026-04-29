@@ -42,10 +42,10 @@ def analyze_image_with_query(model, query, encoded_img):
     return chat_completion.choices[0].message.content
 
 
-# ✅ RUN
-image_path = "C:/dev/Medico-AI-2.0/acne.jpg"
+# # ✅ RUN (commented - used by app.py)
+# image_path = "C:/dev/Medico-AI-2.0/acne.jpg"
 
-encoded_img = encode_img(image_path)
-result = analyze_image_with_query(model, query, encoded_img)
+# encoded_img = encode_img(image_path)
+# result = analyze_image_with_query(model, query, encoded_img)
 
-print("\n🧠 AI Diagnosis:\n", result)
+# print("\n🧠 AI Diagnosis:\n", result)
