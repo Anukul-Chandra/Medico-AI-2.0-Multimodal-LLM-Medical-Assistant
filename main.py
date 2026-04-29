@@ -1,3 +1,17 @@
+"""
+Medico AI 2.0 - FastAPI Backend
+=================================
+A robust backend API for the Medico AI medical assistant.
+Provides endpoints for:
+- Image analysis (medical diagnosis)
+- Voice transcription (speech-to-text)
+- Text-to-Speech (AI voice output)
+- Medical chat (LLM powered)
+
+Author: Medico AI Team
+Version: 2.0
+"""
+
 import os
 import base64
 import tempfile
@@ -8,14 +22,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
 from dotenv import load_dotenv
 
+# Load environment variables from .env file
 load_dotenv()
 
+# Import modules from project
 from brain import encode_img, analyze_image_with_query
 from voice_input import record_audio, transcribe_with_groq
 from voice_output import text_to_speech_withgTTS, text_to_speech_with_elevenlabs
 
+# Initialize FastAPI app
 app = FastAPI(title="Medico AI API")
 
+# Add CORS middleware for cross-origin requests
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,6 +41,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load API keys from environment
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 

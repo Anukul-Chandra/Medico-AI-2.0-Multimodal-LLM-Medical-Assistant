@@ -1,8 +1,24 @@
+"""
+Medico AI 2.0 - Gradio Frontend
+================================
+The web UI for Medico AI medical assistant.
+Features:
+- Image Diagnosis tab: Upload medical images for AI analysis
+- Voice tab: Upload audio files for transcription
+- Chat tab: Conversational AI assistant
+
+Connects to FastAPI backend (main.py) for all AI operations.
+
+Author: Medico AI Team
+Version: 2.0
+"""
+
 import os
 import gradio as gr
 import requests
 import tempfile
 
+# Backend API URL
 API_URL = "http://localhost:8000"
 
 def analyze_image(image):
