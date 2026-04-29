@@ -1,4 +1,15 @@
-# Step1: Setup Audio Recorder (sounddevice - no PyAudio needed)
+"""
+Voice Input Module
+===================
+
+Handles:
+- Audio recording from microphone (sounddevice)
+- Speech-to-Text conversion using Groq Whisper
+
+Dependencies: sounddevice, scipy, pydub, groq
+"""
+
+# Audio recording setup (sounddevice - no PyAudio needed)
 import logging
 import sounddevice as sd
 from scipy.io.wavfile import write
