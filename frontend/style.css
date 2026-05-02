@@ -802,8 +802,8 @@ body {
 }
 
 .result-content li {
-    margin: 5px 0;
-    line-height: 1.6;
+    margin: 3px 0;
+    line-height: 1.5;
 }
 
 .result-content p {
@@ -813,7 +813,7 @@ body {
 .result-content br {
     display: block;
     content: "";
-    margin: 5px 0;
+    margin: 2px 0;
 }
 
 .speak-icon-btn {
