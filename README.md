@@ -378,4 +378,3 @@ Built with:
 <p align="center">
   <sub>🏥 Built with ❤️ for Healthcare</sub>
 </p>
->>>>>>> f3186893a8f57f9d05a89df0d05f41009ea71635
