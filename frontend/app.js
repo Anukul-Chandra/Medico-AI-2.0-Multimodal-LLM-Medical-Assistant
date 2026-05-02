@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = ""; // Will use relative URL (same domain)
 
 // DOM Elements
 const loadingOverlay = document.getElementById('loading-overlay');
