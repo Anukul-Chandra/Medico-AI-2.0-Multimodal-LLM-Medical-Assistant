@@ -141,6 +141,9 @@ let selectedAudio = null;
 
 audioUploadZone.addEventListener('click', () => audioInput.click());
 audioInput.addEventListener('change', (e) => {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    
     if (e.target.files.length) {
         selectedAudio = e.target.files[0];
         audioUploadZone.innerHTML = `
@@ -154,6 +157,9 @@ audioInput.addEventListener('change', (e) => {
 
 transcribeBtn.addEventListener('click', async () => {
     if (!selectedAudio) return;
+    
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
     
     showLoading();
     
@@ -198,6 +204,8 @@ let isRecording = false;
 
 recordBtn.addEventListener('click', async () => {
     if (!isRecording) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
@@ -243,6 +251,9 @@ recordBtn.addEventListener('click', async () => {
     } else {
         mediaRecorder.stop();
         isRecording = false;
+        
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
         
         clearInterval(recordingTimer);
         recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Start Recording</span>';
