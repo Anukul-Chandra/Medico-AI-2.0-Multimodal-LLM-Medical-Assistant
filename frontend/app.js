@@ -364,6 +364,43 @@ speakBtn.addEventListener('click', async () => {
     hideLoading();
 });
 
+// ==================== SPEAK AI RESPONSE ====================
+const speakAiBtn = document.getElementById('speak-ai-btn');
+
+speakAiBtn.addEventListener('click', async () => {
+    const aiText = voiceAiText.textContent.trim();
+    if (!aiText) {
+        alert('No AI response to speak');
+        return;
+    }
+    
+    showLoading();
+    
+    try {
+        const response = await fetch(`${API_URL}/speak`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `text=${encodeURIComponent(aiText)}`
+        });
+        
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            audioPlayer.src = url;
+            audioPlayer.style.display = 'block';
+            audioPlayer.play();
+        } else {
+            alert('Error generating speech');
+        }
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+    
+    hideLoading();
+});
+
 // ==================== CHAT ====================
 const chatInput = document.getElementById('chat-input');
 const sendBtn = document.getElementById('send-btn');

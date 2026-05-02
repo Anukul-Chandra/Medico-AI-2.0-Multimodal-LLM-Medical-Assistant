@@ -796,3 +796,20 @@ body {
     content: "";
     margin: 5px 0;
 }
+
+.speak-icon-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.speak-icon-btn:hover {
+    background: var(--dark-card);
+    box-shadow: 0 0 15px var(--primary-glow);
+}
