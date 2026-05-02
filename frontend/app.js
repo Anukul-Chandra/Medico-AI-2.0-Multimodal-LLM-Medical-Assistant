@@ -1,9 +1,10 @@
 const API_URL = "http://localhost:8000";
 
 // DOM Elements
+const loadingOverlay = document.getElementById('loading-overlay');
+const audioPlayer = document.getElementById('audio-player');
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
-const loadingOverlay = document.getElementById('loading-overlay');
 
 // Tab Switching
 tabBtns.forEach(btn => {
@@ -336,45 +337,6 @@ autoAiBtn.addEventListener('click', async () => {
     hideLoading();
 });
 
-// ==================== TEXT TO SPEECH ====================
-const ttsInput = document.getElementById('tts-input');
-const speakBtn = document.getElementById('speak-btn');
-const audioPlayer = document.getElementById('audio-player');
-
-speakBtn.addEventListener('click', async () => {
-    const text = ttsInput.value.trim();
-    if (!text) {
-        alert('Please enter text to convert to speech');
-        return;
-    }
-    
-    showLoading();
-    
-    try {
-        const response = await fetch(`${API_URL}/speak`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `text=${encodeURIComponent(text)}`
-        });
-        
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            audioPlayer.src = url;
-            audioPlayer.style.display = 'block';
-            audioPlayer.play();
-        } else {
-            alert('Error generating speech');
-        }
-    } catch (error) {
-        alert(`Error: ${error.message}`);
-    }
-    
-    hideLoading();
-});
-
 // ==================== SPEAK AI RESPONSE ====================
 const speakAiBtn = document.getElementById('speak-ai-btn');
 
@@ -426,7 +388,21 @@ async function sendMessage() {
     addMessage(message, 'user');
     chatInput.value = '';
     
-    showLoading();
+    // Show typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot-message typing-message';
+    typingDiv.innerHTML = `
+        <div class="message-avatar">
+            <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="message-content typing-content">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+    `;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     
     try {
         const response = await fetch(`${API_URL}/chat`, {
@@ -442,6 +418,10 @@ async function sendMessage() {
         
         const data = await response.json();
         
+        // Remove typing indicator
+        const typingMsg = document.querySelector('.typing-message');
+        if (typingMsg) typingMsg.remove();
+        
         if (response.ok) {
             const botResponse = data.response || 'No response';
             addMessage(botResponse, 'bot');
@@ -450,6 +430,10 @@ async function sendMessage() {
             addMessage(`Error: ${data.error || 'Unknown error'}`, 'bot');
         }
     } catch (error) {
+        // Remove typing indicator
+        const typingMsg = document.querySelector('.typing-message');
+        if (typingMsg) typingMsg.remove();
+        
         addMessage(`Error: ${error.message}`, 'bot');
     }
     
@@ -479,9 +463,13 @@ function addMessage(text, sender) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
+sendBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    sendMessage();
+});
+chatInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
+        e.preventDefault();
         sendMessage();
     }
 });
