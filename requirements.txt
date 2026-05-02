@@ -9,3 +9,4 @@ gtts
 elevenlabs
 numpy
 sounddevice
+gradio
