@@ -42,13 +42,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Get base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
 # Serve frontend static files
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 # Serve index.html at root
 @app.get("/")
 def root():
-    return FileResponse("../frontend/index.html")
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 
