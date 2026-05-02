@@ -16,7 +16,8 @@ import os
 import base64
 import tempfile
 from fastapi import FastAPI, UploadFile, File, Form
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, Response
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
@@ -41,7 +42,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load API keys from environment
+# Serve frontend static files
+app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+
+# Serve index.html at root
+@app.get("/")
+def root():
+    return FileResponse("../frontend/index.html")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 
@@ -58,10 +65,6 @@ class ImageAnalysisResponse(BaseModel):
 # ================================
 # Health Check
 # ================================
-@app.get("/")
-def root():
-    return {"message": "Medico AI API is running!", "status": "healthy"}
-
 @app.get("/health")
 def health():
     return {"status": "ok", "api": "Medico AI"}
