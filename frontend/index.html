@@ -31,47 +31,40 @@
         </header>
 
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="image">
-                <i class="fa-solid fa-image"></i>
-                <span>Image Diagnosis</span>
+            <button class="tab-btn active" data-tab="chat">
+                <i class="fa-solid fa-comments"></i>
+                <span>Chat</span>
             </button>
             <button class="tab-btn" data-tab="voice">
                 <i class="fa-solid fa-microphone"></i>
                 <span>Voice</span>
             </button>
-            <button class="tab-btn" data-tab="chat">
-                <i class="fa-solid fa-comments"></i>
-                <span>Chat</span>
+            <button class="tab-btn" data-tab="image">
+                <i class="fa-solid fa-image"></i>
+                <span>Image Diagnosis</span>
             </button>
         </nav>
 
-        <main class="main-content">
-            <!-- Image Diagnosis Tab -->
-            <section class="tab-content active" id="image-tab">
-                <div class="upload-zone" id="upload-zone">
-                    <div class="upload-icon">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
+<main class="main-content">
+            <!-- Chat Tab -->
+            <section class="tab-content active" id="chat-tab">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm Medico AI. How can I assist you with your health concerns today?</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="upload-text">Drag & Drop medical image or click to upload</p>
-                    <p class="upload-hint">Supported: X-Ray, MRI, CT Scan, Ultrasound</p>
-                    <input type="file" id="image-input" accept="image/*" hidden>
-                </div>
-                <div class="image-preview" id="image-preview" style="display: none;">
-                    <img id="preview-img" src="" alt="Preview">
-                    <button class="remove-btn" id="remove-image">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <button class="action-btn" id="analyze-btn" disabled>
-                    <i class="fa-solid fa-brain"></i>
-                    Analyze Image
-                </button>
-                <div class="result-box" id="image-result" style="display: none;">
-                    <div class="result-header">
-                        <i class="fa-solid fa-stethoscope"></i>
-                        <span>AI Diagnosis Result</span>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Ask a medical question...">
+                        <button class="send-btn" id="send-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
                     </div>
-                    <div class="result-content" id="diagnosis-text"></div>
                 </div>
             </section>
 
@@ -137,25 +130,32 @@
                 <audio id="audio-player" controls style="display: none;"></audio>
             </section>
 
-            <!-- Chat Tab -->
-            <section class="tab-content" id="chat-tab">
-                <div class="chat-container">
-                    <div class="chat-messages" id="chat-messages">
-                        <div class="message bot-message">
-                            <div class="message-avatar">
-                                <i class="fa-solid fa-robot"></i>
-                            </div>
-                            <div class="message-content">
-                                <p>Hello! I'm Medico AI. How can I assist you with your health concerns today?</p>
-                            </div>
-                        </div>
+            <!-- Image Diagnosis Tab -->
+            <section class="tab-content" id="image-tab">
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
                     </div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="Ask a medical question...">
-                        <button class="send-btn" id="send-btn">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
+                    <p class="upload-text">Drag & Drop medical image or click to upload</p>
+                    <p class="upload-hint">Supported: X-Ray, MRI, CT Scan, Ultrasound</p>
+                    <input type="file" id="image-input" accept="image/*" hidden>
+                </div>
+                <div class="image-preview" id="image-preview" style="display: none;">
+                    <img id="preview-img" src="" alt="Preview">
+                    <button class="remove-btn" id="remove-image">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <button class="action-btn" id="analyze-btn" disabled>
+                    <i class="fa-solid fa-brain"></i>
+                    Analyze Image
+                </button>
+                <div class="result-box" id="image-result" style="display: none;">
+                    <div class="result-header">
+                        <i class="fa-solid fa-stethoscope"></i>
+                        <span>AI Diagnosis Result</span>
                     </div>
+                    <div class="result-content" id="diagnosis-text"></div>
                 </div>
             </section>
         </main>
