@@ -149,6 +149,19 @@ body {
     text-shadow: 0 0 20px var(--primary-glow);
 }
 
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text .tagline {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 2px;
+}
+
 .status-indicator {
     display: flex;
     align-items: center;
