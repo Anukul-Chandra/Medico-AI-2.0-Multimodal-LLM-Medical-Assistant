@@ -1,14 +1,3 @@
-"""
-Voice Output Module
-====================
-
-Handles:
-- Text-to-Speech using ElevenLabs (premium) or Google gTTS (free)
-- Auto-play on Windows/Mac/Linux
-
-Dependencies: gtts, elevenlabs
-"""
-
 import os
 from gtts import gTTS
 from elevenlabs.client import ElevenLabs
@@ -16,9 +5,8 @@ from elevenlabs import save
 import subprocess
 import platform
 
-# Text-to-Speech using Google TTS (Free)
+# Step1 : Setup Text to Speech (TTS) - Google TTS.
 def text_to_speech_withgTTS_old(text, output_filepath):
-    """Google TTS - deprecated"""
     audioobj = gTTS(text=text, lang='en', slow=False)
     audioobj.save(output_filepath)
 
@@ -26,11 +14,10 @@ def text_to_speech_withgTTS_old(text, output_filepath):
 input_text = "Hello, this is a Anukul Chandra."
 
 
-# ElevenLabs TTS (Premium - requires API key)
+# Step2 : Setup Text to Speech (TTS) - ElevenLabs
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
 
 def text_to_speech_with_elevenlabs_old(input_text, output_filepath):
-    """ElevenLabs TTS - deprecated"""
     client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
     audio = client.text_to_speech.convert(
@@ -105,9 +92,9 @@ def text_to_speech_with_elevenlabs(input_text, output_filepath):
         print(f"An error occurred while trying to play the audio: {e}")
 
 
-# # 🔥 RUN (commented - used by app.py)
-# # text_to_speech_withgTTS(input_text, "gtts_testing_autoplay.mp3")
-# text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing_autoplay.mp3")
+# 🔥 RUN (recommended)
+#text_to_speech_withgTTS(input_text, "gtts_testing_autoplay.mp3")
+#text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing_autoplay.mp3")
 
-# # ⚠️ Only if ElevenLabs paid plan
-# # text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing.mp3")
+# ⚠️ Only if ElevenLabs paid plan
+# text_to_speech_with_elevenlabs(input_text, "elevenlabs_testing.mp3")
