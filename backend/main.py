@@ -86,7 +86,7 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
             
             result = analyze_image_with_query(
                 "meta-llama/llama-4-scout-17b-16e-instruct",
-                "You are a professional medical expert. Analyze the image and provide a clear, well-structured diagnosis. Use this format:\n\nDiagnosis: [condition name]\n\nObservations:\n- [point 1]\n- [point 2]\n\nRecommendations:\n- [recommendation 1]\n- [recommendation 2]",
+                "You are a professional medical expert. Analyze this medical image and provide detailed diagnosis. Give clear observations and recommendations.",
                 encode_img(tmp.name)
             )
             
