@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medico AI 2.0 - Multimodal Medical Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="grid-pattern"></div>
+        <div class="glow-orb orb1"></div>
+        <div class="glow-orb orb2"></div>
+        <div class="glow-orb orb3"></div>
+    </div>
+
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>MEDICO <span class="highlight">AI 2.0</span></h1>
+                    <p class="tagline">Multimodal Medical Assistant</p>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">System Online</span>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="chat">
+                <i class="fa-solid fa-comments"></i>
+                <span>Chat</span>
+            </button>
+            <button class="tab-btn" data-tab="voice">
+                <i class="fa-solid fa-microphone"></i>
+                <span>Voice</span>
+            </button>
+            <button class="tab-btn" data-tab="image">
+                <i class="fa-solid fa-image"></i>
+                <span>Image Diagnosis</span>
+            </button>
+        </nav>
+
+<main class="main-content">
+            <!-- Chat Tab -->
+            <section class="tab-content active" id="chat-tab">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm Medico AI. How can I assist you with your health concerns today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Ask a medical question...">
+                        <button class="send-btn" id="send-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Voice Tab -->
+            <section class="tab-content" id="voice-tab">
+                <div class="voice-panel">
+                    <div class="audio-upload-zone" id="audio-upload-zone">
+                        <i class="fa-solid fa-music"></i>
+                        <p>Upload Audio File</p>
+                        <span>MP3, WAV, M4A</span>
+                        <input type="file" id="audio-input" accept="audio/*" hidden>
+                    </div>
+                    
+                    <div class="record-section">
+                        <p class="record-label">Or record with microphone</p>
+                        <button class="record-btn" id="record-btn">
+                            <i class="fa-solid fa-microphone"></i>
+                            <span>Start Recording</span>
+                        </button>
+                        <div class="recording-indicator" id="recording-indicator" style="display: none;">
+                            <span class="recording-dot"></span>
+                            <span>Recording...</span>
+                            <span id="record-time">00:00</span>
+                        </div>
+                    </div>
+
+                    <button class="action-btn" id="transcribe-btn" disabled>
+                        <i class="fa-solid fa-file-lines"></i>
+                        Transcribe
+                    </button>
+                    <div class="result-box" id="transcribe-result" style="display: none;">
+                        <div class="result-header">
+                            <i class="fa-solid fa-wave-square"></i>
+                            <span>Transcription</span>
+                        </div>
+                        <div class="result-content" id="transcription-text"></div>
+                    </div>
+                    
+                    <div class="ai-response-section" id="ai-response-section" style="display: none;">
+                        <p class="response-label">Get AI Response:</p>
+                        <div class="response-buttons">
+                            <button class="secondary-btn" id="ask-ai-btn">
+                                <i class="fa-solid fa-robot"></i>
+                                Ask AI
+                            </button>
+                            <button class="secondary-btn" id="auto-ai-btn">
+                                <i class="fa-solid fa-bolt"></i>
+                                Auto Response
+                            </button>
+                        </div>
+                        <div class="result-box" id="voice-ai-result" style="display: none;">
+                            <div class="result-header">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>AI Response</span>
+                                <button class="speak-icon-btn" id="speak-ai-btn" title="Convert to Speech">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                            </div>
+                            <div class="result-content" id="voice-ai-text"></div>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio-player" controls style="display: none;"></audio>
+            </section>
+
+            <!-- Image Diagnosis Tab -->
+            <section class="tab-content" id="image-tab">
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <p class="upload-text">Drag & Drop medical image or click to upload</p>
+                    <p class="upload-hint">Supported: X-Ray, MRI, CT Scan, Ultrasound</p>
+                    <input type="file" id="image-input" accept="image/*" hidden>
+                </div>
+                <div class="image-preview" id="image-preview" style="display: none;">
+                    <img id="preview-img" src="" alt="Preview">
+                    <button class="remove-btn" id="remove-image">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <button class="action-btn" id="analyze-btn" disabled>
+                    <i class="fa-solid fa-brain"></i>
+                    Analyze Image
+                </button>
+                <div class="result-box" id="image-result" style="display: none;">
+                    <div class="result-header">
+                        <i class="fa-solid fa-stethoscope"></i>
+                        <span>AI Diagnosis Result</span>
+                    </div>
+                    <div class="result-content" id="diagnosis-text"></div>
+                </div>
+            </section>
+        </main>
+
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <div class="loader-text">Processing...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
