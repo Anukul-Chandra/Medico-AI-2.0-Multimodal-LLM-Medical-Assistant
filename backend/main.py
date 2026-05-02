@@ -134,7 +134,15 @@ async def speak_endpoint(text: str = Form(...)):
         except:
             text_to_speech_withgTTS(text, out.name)
         
-        return FileResponse(out.name, media_type="audio/mpeg", filename="response.mp3")
+        with open(out.name, "rb") as f:
+            audio_data = f.read()
+        
+        try:
+            os.unlink(out.name)
+        except:
+            pass
+        
+        return Response(content=audio_data, media_type="audio/mpeg")
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
