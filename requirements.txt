@@ -8,3 +8,4 @@ pydub
 gtts
 elevenlabs
 numpy
+sounddevice
