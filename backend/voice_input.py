@@ -11,13 +11,20 @@ Dependencies: sounddevice, scipy, pydub, groq
 
 # Audio recording setup (sounddevice - no PyAudio needed)
 import logging
-import sounddevice as sd
-from scipy.io.wavfile import write
-import speech_recognition as sr
-from pydub import AudioSegment
-from io import BytesIO
-import numpy as np
 import os
+
+try:
+    import sounddevice as sd
+    from scipy.io.wavfile import write
+    from pydub import AudioSegment
+    import numpy as np
+    AUDIO_AVAILABLE = True
+except OSError:
+    AUDIO_AVAILABLE = False
+    sd = None
+    write = None
+    AudioSegment = None
+    np = None
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -30,12 +37,14 @@ def record_audio(file_path, timeout=20, phrase_time_limit=None, fs=44100):
         timeout (int): max wait time (simulate start delay)
         phrase_time_limit (int): recording duration (seconds)
     """
+    if not AUDIO_AVAILABLE:
+        logging.warning("Audio recording not available. Please use text input instead.")
+        return None
 
     try:
         logging.info("Adjusting for ambient noise...")
         logging.info("Start speaking now...")
 
-        # 🎯 duration logic (phrase_time_limit fallback)
         duration = phrase_time_limit if phrase_time_limit else 5
 
         recording = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='int16')
@@ -43,16 +52,13 @@ def record_audio(file_path, timeout=20, phrase_time_limit=None, fs=44100):
 
         logging.info("Recording complete.")
 
-        # 🔍 Silent check
         if np.max(np.abs(recording)) < 100:
             logging.warning("Microphone seems silent! Check your microphone.")
             return None
 
-        # Save temp WAV
         temp_wav = "temp.wav"
         write(temp_wav, fs, recording)
 
-        # Convert to MP3
         audio_segment = AudioSegment.from_wav(temp_wav)
         audio_segment.export(file_path, format="mp3", bitrate="128k")
 
