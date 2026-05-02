@@ -7,8 +7,6 @@ ENV PORT=7860
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     ffmpeg \
-    portaudio \
-    libportaudio2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
