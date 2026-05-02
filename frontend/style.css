@@ -472,6 +472,48 @@ body {
     color: var(--text-primary);
 }
 
+.ai-response-section {
+    margin: 20px 0;
+}
+
+.response-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.response-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.secondary-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--dark-card);
+    border: 1px solid var(--secondary);
+    border-radius: 10px;
+    color: var(--secondary);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secondary-btn:hover {
+    background: var(--secondary);
+    color: white;
+}
+
+.secondary-btn i {
+    font-size: 16px;
+}
+
 .divider {
     display: flex;
     align-items: center;

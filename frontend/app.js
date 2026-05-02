@@ -171,6 +171,8 @@ transcribeBtn.addEventListener('click', async () => {
         if (response.ok) {
             transcriptionText.textContent = data.text || 'No speech detected';
             transcribeResult.style.display = 'block';
+            document.getElementById('ai-response-section').style.display = 'block';
+            document.getElementById('voice-ai-result').style.display = 'none';
         } else {
             transcriptionText.textContent = `Error: ${data.error || 'Unknown error'}`;
             transcribeResult.style.display = 'block';
@@ -247,6 +249,80 @@ recordBtn.addEventListener('click', async () => {
         recordBtn.classList.remove('recording');
         recordingIndicator.style.display = 'none';
     }
+});
+
+// ==================== AI RESPONSE FOR VOICE ====================
+const askAiBtn = document.getElementById('ask-ai-btn');
+const autoAiBtn = document.getElementById('auto-ai-btn');
+const voiceAiResult = document.getElementById('voice-ai-result');
+const voiceAiText = document.getElementById('voice-ai-text');
+
+askAiBtn.addEventListener('click', async () => {
+    const transcribedText = transcriptionText.textContent.trim();
+    if (!transcribedText || transcribedText === 'No speech detected') {
+        alert('No transcription available');
+        return;
+    }
+    
+    showLoading();
+    
+    try {
+        const response = await fetch(`${API_URL}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: transcribedText, history: [] })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            voiceAiText.innerHTML = formatAIResponse(data.response || 'No response');
+            voiceAiResult.style.display = 'block';
+        } else {
+            voiceAiText.textContent = `Error: ${data.error || 'Unknown error'}`;
+            voiceAiResult.style.display = 'block';
+        }
+    } catch (error) {
+        voiceAiText.textContent = `Error: ${error.message}`;
+        voiceAiResult.style.display = 'block';
+    }
+    
+    hideLoading();
+});
+
+autoAiBtn.addEventListener('click', async () => {
+    const transcribedText = transcriptionText.textContent.trim();
+    if (!transcribedText || transcribedText === 'No speech detected') {
+        alert('No transcription available');
+        return;
+    }
+    
+    showLoading();
+    
+    try {
+        const response = await fetch(`${API_URL}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: transcribedText, history: [] })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            voiceAiText.innerHTML = formatAIResponse(data.response || 'No response');
+            voiceAiResult.style.display = 'block';
+            
+            ttsInput.value = data.response || '';
+        } else {
+            voiceAiText.textContent = `Error: ${data.error || 'Unknown error'}`;
+            voiceAiResult.style.display = 'block';
+        }
+    } catch (error) {
+        voiceAiText.textContent = `Error: ${error.message}`;
+        voiceAiResult.style.display = 'block';
+    }
+    
+    hideLoading();
 });
 
 // ==================== TEXT TO SPEECH ====================
