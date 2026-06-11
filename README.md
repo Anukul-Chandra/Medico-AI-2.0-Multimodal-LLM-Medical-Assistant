@@ -1,14 +1,4 @@
----
-title: Medico AI 2.0
-emoji: 🩺
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 7860
----
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-=======
 # 🤖 Medico AI 2.0 — Multimodal LLM Medical Assistant
 
 > An end-to-end AI-powered medical assistant that combines image diagnosis, voice interaction, and intelligent chat — powered by Groq's Llama 4, Whisper, and ElevenLabs for a complete healthcare AI experience.
